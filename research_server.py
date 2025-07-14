@@ -5,11 +5,12 @@ from typing import List
 from mcp.server.fastmcp import FastMCP
 
 port = int(os.getenv("PORT", 8001))
+host = os.getenv("HOST", "0.0.0.0")
 
 PAPER_DIR = "papers"
 
 # Initialize FastMCP server
-mcp = FastMCP("research", port=port)
+mcp = FastMCP("research", host=host, port=port)
 
 @mcp.tool()
 def search_papers(topic: str, max_results: int = 5) -> List[str]:
@@ -191,5 +192,6 @@ Follow these instructions:
 Please present both detailed information about each paper and a high-level synthesis of the research landscape in {topic}."""
 
 if __name__ == "__main__":
-    # Initialize and run the server
+    # Initialize and run the server with explicit host and port for production
+    print(f"Starting server on {host}:{port}")
     mcp.run(transport='sse')
